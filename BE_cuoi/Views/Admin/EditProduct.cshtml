@@ -1,0 +1,47 @@
+﻿@model BE_cuoi.Models.Product
+@{
+    ViewBag.Title = "Chỉnh Sửa Game - Admin Panel";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<div class="container py-5 text-light" style="max-width: 700px;">
+    <h2 class="fw-bold mb-4">✏️ CHỈNH SỬA THÔNG TIN GAME</h2>
+
+    @using (Html.BeginForm("EditProduct", "Admin", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.ProductID)
+        <div class="card bg-dark border-secondary rounded-4 p-4 shadow-sm">
+            <div class="mb-3">
+                <label class="form-label text-muted fw-semibold">Tên Game:</label>
+                @Html.TextBoxFor(m => m.ProductName, new { @class = "form-control bg-dark text-white border-secondary", required = "required" })
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label text-muted fw-semibold">Giá bán (VNĐ):</label>
+                    @Html.TextBoxFor(m => m.Price, new { @class = "form-control bg-dark text-white border-secondary", type = "number", required = "required" })
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label text-muted fw-semibold">Số lượng tồn kho:</label>
+                    @Html.TextBoxFor(m => m.StockQuantity, new { @class = "form-control bg-dark text-white border-secondary", type = "number", required = "required" })
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label text-muted fw-semibold">Đường dẫn ảnh bìa (CoverImage):</label>
+                @Html.TextBoxFor(m => m.CoverImage, new { @class = "form-control bg-dark text-white border-secondary" })
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label text-muted fw-semibold">Mô tả game:</label>
+                @Html.TextAreaFor(m => m.Description, new { @class = "form-control bg-dark text-white border-secondary", rows = 4 })
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn fw-bold px-4 flex-grow-1" style="background: #10B981; color: #FFF;">CẬP NHẬT THAY ĐỔI</button>
+                <a href="@Url.Action("Products", "Admin")" class="btn btn-outline-secondary px-4">Quay lại</a>
+            </div>
+        </div>
+    }
+</div>

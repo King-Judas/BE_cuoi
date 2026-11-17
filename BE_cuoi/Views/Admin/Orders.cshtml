@@ -1,0 +1,81 @@
+﻿@model IEnumerable<BE_cuoi.Models.Order>
+@{
+    ViewBag.Title = "Quản Lý Đơn Hàng - Admin Panel";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<div class="container py-5 text-light">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">📦 QUẢN LÝ ĐƠN HÀNG KHÁCH HÀNG</h2>
+        <a href="@Url.Action("Products", "Admin")" class="btn btn-outline-info">
+            ← Quay lại Quản lý Game
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="text-center py-5" style="background: #151B26; border-radius: 12px; border: 1px dashed #334155;">
+            <h4 class="text-muted mb-0">Chưa có đơn hàng nào được đặt trong hệ thống.</h4>
+        </div>
+    }
+    else
+    {
+        <div class="card bg-dark border-secondary rounded-4 p-3 shadow-sm">
+            <div class="table-responsive">
+                <table class="table table-dark table-hover align-middle mb-0">
+                    <thead>
+                        <tr class="text-muted border-secondary">
+                            <th>Mã ĐH</th>
+                            <th>Khách hàng</th>
+                            <th>Ngày đặt</th>
+                            <th>Tổng tiền</th>
+                            <th>Thanh toán</th>
+                            <th>Trạng thái đơn</th>
+                            <th class="text-center">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in Model)
+                        {
+                            <tr>
+                                <td class="fw-bold text-info">#@order.OrderID</td>
+                                <td>@(order.User != null ? order.User.Username : "User #" + order.UserID)</td>
+                                <td class="text-muted">@string.Format("{0:dd/MM/yyyy HH:mm}", order.OrderDate)</td>
+                                <td class="text-warning fw-bold">@string.Format("{0:N0} đ", order.TotalAmount)</td>
+                                <td>
+                                    <span class="badge bg-secondary">@order.PaymentMethod</span>
+                                    <div class="small text-muted">@order.PaymentStatus</div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-warning text-dark">@order.OrderStatus</span>
+                                </td>
+                                <td class="text-center">
+                                    <!-- Form cập nhật nhanh trạng thái đơn hàng -->
+                                    @using (Html.BeginForm("UpdateOrderStatus", "Admin", FormMethod.Post, new { @class = "d-inline-flex gap-1 align-items-center" }))
+                                    {
+                                        @Html.Hidden("orderId", order.OrderID)
+                                        <select name="orderStatus" class="form-select form-select-sm bg-dark text-white border-secondary" style="width: 130px;">
+                                            <option value="Chờ thanh toán" @(order.OrderStatus == "Chờ thanh toán" ? "selected" : "")>Chờ thanh toán</option>
+                                            <option value="Đã hoàn thành" @(order.OrderStatus == "Đã hoàn thành" ? "selected" : "")>Đã hoàn thành</option>
+                                            <option value="Đã hủy" @(order.OrderStatus == "Đã hủy" ? "selected" : "")>Đã hủy</option>
+                                        </select>
+                                        <input type="hidden" name="paymentStatus" value="Đã thanh toán" />
+                                        <button type="submit" class="btn btn-sm btn-outline-success">✔ Duyệt</button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</div>

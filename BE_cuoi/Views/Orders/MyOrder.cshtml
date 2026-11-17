@@ -1,0 +1,69 @@
+﻿@model IEnumerable<BE_cuoi.Models.Order>
+@{
+    ViewBag.Title = "Đơn Hàng Của Tôi - KING Game Store";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<div class="container py-5 text-light">
+    <h2 class="fw-bold mb-4">📜 LỊCH SỬ ĐƠN HÀNG CỦA TÔI</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="text-center py-5" style="background: #151B26; border-radius: 12px; border: 1px dashed #334155;">
+            <h4 class="text-muted mb-3">Bạn chưa có đơn hàng nào trong hệ thống.</h4>
+            <a href="@Url.Action("Index", "Home")" class="btn btn-info fw-bold">Khám phá kho game ngay</a>
+        </div>
+    }
+    else
+    {
+        <div class="d-flex flex-column gap-4">
+            @foreach (var order in Model)
+            {
+                <div class="card bg-dark border-secondary rounded-4 p-4 shadow-sm">
+                    <div class="d-flex justify-content-between align-items-center border-bottom border-secondary pb-3 mb-3">
+                        <div>
+                            <span class="fw-bold text-info fs-5">Đơn hàng #@order.OrderID</span>
+                            <span class="text-muted ms-3 small">Ngày đặt: @string.Format("{0:dd/MM/yyyy HH:mm}", order.OrderDate)</span>
+                        </div>
+                        <div>
+                            <span class="badge bg-warning text-dark px-3 py-2">@order.OrderStatus</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <ul class="list-group list-group-flush bg-transparent">
+                            @foreach (var detail in order.OrderDetails)
+                            {
+                                <li class="list-group-item bg-transparent text-light d-flex justify-content-between align-items-center px-0 border-secondary">
+                                    <div>
+                                        <span class="fw-semibold">@(detail.Product != null ? detail.Product.ProductName : "Sản phẩm")</span>
+                                        <span class="text-muted small ms-2">x @detail.Quantity</span>
+                                    </div>
+                                    <span class="text-warning">@string.Format("{0:N0} đ", detail.SubTotal)</span>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center pt-2 border-top border-secondary">
+                        <div>
+                            <span class="text-muted small">Hình thức thanh toán: @order.PaymentMethod (@order.PaymentStatus)</span>
+                        </div>
+                        <div class="text-end">
+                            <span class="text-muted me-2">Tổng tiền:</span>
+                            <span class="text-warning fw-bold fs-5">@string.Format("{0:N0} đ", order.TotalAmount)</span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

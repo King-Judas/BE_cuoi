@@ -1,0 +1,65 @@
+﻿@model BE_cuoi.Models.Order
+@{
+    ViewBag.Title = "Chi Tiết Đơn Hàng #" + Model.OrderID + " - Admin Panel";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<div class="container py-5 text-light">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">📄 CHI TIẾT ĐƠN HÀNG #@Model.OrderID</h2>
+        <a href="@Url.Action("Orders", "Admin")" class="btn btn-outline-info">← Quay lại danh sách đơn hàng</a>
+    </div>
+
+    <div class="row g-4">
+        <!-- Thông tin chung khách hàng -->
+        <div class="col-md-4">
+            <div class="card bg-dark border-secondary p-4 rounded-4 h-100 shadow-sm">
+                <h4 class="text-info mb-3">Thông Tin Khách Hàng</h4>
+                <p><strong>Khách hàng:</strong> @(Model.User != null ? Model.User.Username : "User #" + Model.UserID)</p>
+                <p><strong>Ngày đặt:</strong> @string.Format("{0:dd/MM/yyyy HH:mm}", Model.OrderDate)</p>
+                <p><strong>Địa chỉ nhận:</strong> @Model.ShippingAddress</p>
+                <p><strong>Phương thức TT:</strong> @Model.PaymentMethod</p>
+                <p><strong>Trạng thái TT:</strong> <span class="badge bg-secondary">@Model.PaymentStatus</span></p>
+                <p><strong>Trạng thái đơn:</strong> <span class="badge bg-warning text-dark">@Model.OrderStatus</span></p>
+            </div>
+        </div>
+
+        <!-- Bảng danh sách sản phẩm trong đơn -->
+        <div class="col-md-8">
+            <div class="card bg-dark border-secondary p-4 rounded-4 shadow-sm">
+                <h4 class="text-info mb-3">Danh Sách Game Trong Đơn</h4>
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover align-middle mb-0">
+                        <thead>
+                            <tr class="text-muted border-secondary">
+                                <th>Tên Game</th>
+                                <th class="text-center">Số lượng</th>
+                                <th class="text-end">Đơn giá</th>
+                                <th class="text-end">Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var detail in Model.OrderDetails)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="fw-bold">@(detail.Product != null ? detail.Product.ProductName : "Sản phẩm #" + detail.ProductID)</div>
+                                    </td>
+                                    <td class="text-center">@detail.Quantity</td>
+                                    <td class="text-end">@string.Format("{0:N0} đ", detail.UnitPrice)</td>
+                                    <td class="text-end text-warning fw-bold">@string.Format("{0:N0} đ", detail.SubTotal)</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr class="border-secondary">
+                                <td colspan="3" class="text-end fw-bold text-light">Tổng cộng:</td>
+                                <td class="text-end text-warning fw-bold fs-5">@string.Format("{0:N0} đ", Model.TotalAmount)</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

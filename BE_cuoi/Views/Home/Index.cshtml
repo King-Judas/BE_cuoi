@@ -1,0 +1,103 @@
+﻿@model IEnumerable<BE_cuoi.Models.Product>
+@{
+    ViewBag.Title = "Trang Chủ - KING Game Store";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<style>
+    body {
+        background-color: #0B0E14;
+        color: #E2E8F0;
+    }
+
+    .hero-banner {
+        background: linear-gradient(rgba(11, 14, 20, 0.4), rgba(11, 14, 20, 0.9)), url('/Images/hero-bg.jpg');
+        background-size: cover;
+        background-position: center;
+        border-radius: 12px;
+        padding: 60px 30px;
+        margin-bottom: 40px;
+        border: 1px solid #1E293B;
+    }
+
+    .game-card {
+        background: #151B26;
+        border: 1px solid #263042;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: transform 0.2s ease, border-color 0.2s ease;
+        height: 100%;
+    }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            border-color: #00E5FF;
+        }
+
+    .game-thumb {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+    }
+
+    .btn-buy-now {
+        background: #00E5FF;
+        color: #0B0E14;
+        font-weight: 700;
+        border: none;
+        transition: 0.2s;
+    }
+
+        .btn-buy-now:hover {
+            background: #38BDF8;
+            color: #0B0E14;
+        }
+</style>
+
+<div class="container py-4">
+    <!-- HERO BANNER -->
+    <div class="hero-banner text-center text-md-start">
+        <h1 class="display-4 fw-bold text-white mb-3">KHÁM PHÁ THẾ GIỚI GAME ĐỈNH CAO</h1>
+        <p class="lead text-muted mb-4">Sở hữu những tựa game bản quyền mới nhất, key kích hoạt nhanh chóng và an toàn tuyệt đối.</p>
+        <a href="#gamelist" class="btn btn-buy-now btn-lg px-4">XEM TỰA GAME MỚI</a>
+    </div>
+
+    <!-- DANH SÁCH GAME NỔI BẬT -->
+    <h3 id="gamelist" class="fw-bold mb-4 border-bottom border-secondary pb-2">🔥 Tựa Game Mới Phát Hành</h3>
+
+    <div class="row g-4">
+        @if (Model == null || !Model.Any())
+        {
+            <div class="col-12 text-center py-5">
+                <p class="text-muted">Chưa có tựa game nào trong cơ sở dữ liệu.</p>
+            </div>
+        }
+        else
+        {
+            foreach (var game in Model)
+            {
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="game-card d-flex flex-column">
+                        <!-- Ảnh bìa game (Khớp với CoverImage trong Database) -->
+                        <img src="@Url.Content(string.IsNullOrEmpty(game.CoverImage) ? "~/Images/default-game.jpg" : game.CoverImage)"
+                             alt="@game.ProductName" class="game-thumb" />
+
+                        <div class="p-3 d-flex flex-column flex-grow-1 justify-content-between">
+                            <div>
+                                <h5 class="fw-bold text-white text-truncate mb-2" title="@game.ProductName">@game.ProductName</h5>
+                                <span class="badge bg-dark border border-secondary text-info mb-2">PC / Digital Key</span>
+                            </div>
+                            <div>
+                                <div class="text-warning fw-bold fs-5 mb-3">@string.Format("{0:N0} đ", game.Price)</div>
+                                <div class="d-flex gap-2">
+                                    <a href="@Url.Action("Details", "Home", new { id = game.ProductID })" class="btn btn-outline-light btn-sm flex-grow-1 fw-semibold">Chi tiết</a>
+                                    <a href="@Url.Action("AddToCart", "Cart", new { productId = game.ProductID })" class="btn btn-buy-now btn-sm px-3">🛒 Mua</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

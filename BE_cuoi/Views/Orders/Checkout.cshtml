@@ -1,0 +1,74 @@
+﻿@model IEnumerable<BE_cuoi.Models.CartItem>
+@{
+    ViewBag.Title = "Thanh Toán Đơn Hàng - KING Game Store";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+    decimal totalGeneral = Model.Sum(item => item.Quantity * item.Product.Price);
+}
+
+<div class="container py-5 text-light">
+    <h2 class="fw-bold mb-4">💳 THANH TOÁN & HOÀN TẤT ĐƠN HÀNG</h2>
+
+    @using (Html.BeginForm("ProcessCheckout", "Orders", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <div class="row g-5">
+            <!-- Thông tin giao hàng & Thanh toán -->
+            <div class="col-lg-7">
+                <div class="card bg-dark border-secondary rounded-4 p-4 shadow-sm">
+                    <h4 class="fw-bold text-white mb-3">Thông tin nhận hàng</h4>
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted fw-semibold">Địa chỉ nhận Key / Địa chỉ giao đĩa game:</label>
+                        <input type="text" name="shippingAddress" class="form-control bg-dark text-white border-secondary" placeholder="Nhập địa chỉ của bạn hoặc ghi chú nhận Key qua Email..." required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted fw-semibold">Phương thức thanh toán:</label>
+                        <select name="paymentMethod" class="form-select bg-dark text-white border-secondary">
+                            <option value="Thanh toán tiền mặt">Thanh toán tiền mặt khi nhận hàng / nhận Key</option>
+                            <option value="Chuyển khoản ngân hàng">Chuyển khoản ngân hàng (QR Code)</option>
+                            <option value="Ví MoMo / ZaloPay">Ví điện tử MoMo / ZaloPay</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted fw-semibold">Hình thức giao hàng:</label>
+                        <select name="shippingMethod" class="form-select bg-dark text-white border-secondary">
+                            <option value="Gửi Key bản quyền qua Email">Gửi Key bản quyền qua Email (Tức thì)</option>
+                            <option value="Giao nhanh hộp đĩa vật lý">Giao nhanh hộp đĩa vật lý (Giao hàng nhanh)</option>
+                            <option value="Giao tiết kiệm hộp đĩa">Giao tiết kiệm hộp đĩa (Giao hàng tiết kiệm)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tóm tắt giỏ hàng trước khi đặt -->
+            <div class="col-lg-5">
+                <div class="card bg-dark border-secondary rounded-4 p-4 shadow-sm">
+                    <h4 class="fw-bold text-white mb-3">Sản phẩm thanh toán</h4>
+                    <ul class="list-group list-group-flush bg-transparent mb-3">
+                        @foreach (var item in Model)
+                        {
+                            <li class="list-group-item bg-transparent text-light d-flex justify-content-between align-items-center border-secondary">
+                                <div>
+                                    <h6 class="mb-0 text-white">@item.Product.ProductName</h6>
+                                    <small class="text-muted">SL: x@item.Quantity</small>
+                                </div>
+                                <span class="text-warning fw-bold">@string.Format("{0:N0} đ", item.Quantity * item.Product.Price)</span>
+                            </li>
+                        }
+                    </ul>
+
+                    <div class="d-flex justify-content-between mb-4 fs-5 fw-bold border-top border-secondary pt-3">
+                        <span>Tổng tiền thanh toán:</span>
+                        <span class="text-success">@string.Format("{0:N0} đ", totalGeneral)</span>
+                    </div>
+
+                    <button type="submit" class="btn btn-lg w-100 fw-bold shadow" style="background: #00E5FF; color: #0B0E14;">
+                        🚀 XÁC NHẬN ĐẶT HÀNG
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f9491242319d406faf4a224a7002fb6e" Name="Diagram1" ZoomLevel="64">
+        <EntityTypeShape EntityType="KINGgameStoreDBModel.CartItem" Width="1.5" PointX="5.625" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="KINGgameStoreDBModel.Category" Width="1.5" PointX="11.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="KINGgameStoreDBModel.GameKey" Width="1.5" PointX="11.75" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="KINGgameStoreDBModel.OrderDetail" Width="1.5" PointX="7.25" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="KINGgameStoreDBModel.Order" Width="1.5" PointX="5.125" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="KINGgameStoreDBModel.Product" Width="1.5" PointX="9.875" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="KINGgameStoreDBModel.Role" Width="1.5" PointX="0.5" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="KINGgameStoreDBModel.sysdiagram" Width="1.5" PointX="0.5" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="KINGgameStoreDBModel.User" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="KINGgameStoreDBModel.FK__CartItems__Produ__5165187F" ManuallyRouted="false" />
+        <AssociationConnector Association="KINGgameStoreDBModel.FK__CartItems__UserI__5070F446" ManuallyRouted="false" />
+        <AssociationConnector Association="KINGgameStoreDBModel.FK__Products__Catego__440B1D61" ManuallyRouted="false" />
+        <AssociationConnector Association="KINGgameStoreDBModel.FK__GameKeys__Produc__4CA06362" ManuallyRouted="false" />
+        <AssociationConnector Association="KINGgameStoreDBModel.FK__OrderDeta__Order__5BE2A6F2" ManuallyRouted="false" />
+        <AssociationConnector Association="KINGgameStoreDBModel.FK__OrderDeta__Produ__5CD6CB2B" ManuallyRouted="false" />
+        <AssociationConnector Association="KINGgameStoreDBModel.FK__Orders__UserID__5812160E" ManuallyRouted="false" />
+        <AssociationConnector Association="KINGgameStoreDBModel.FK__Users__RoleID__3C69FB99" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
